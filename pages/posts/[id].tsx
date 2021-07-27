@@ -1,13 +1,23 @@
 // Add this import at the top of the file
 import utilStyles from '../../styles/utils.module.css'
 
+import { GetStaticProps, GetStaticPaths } from 'next'
+
 import Head from 'next/head'
 import Date from '../../components/date'
 import Layout from '../../components/layout'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 
 
-export default function Post({ postData }) {
+export default function Post({
+  postData
+}: {
+  postData: {
+    title: string
+    date: string
+    contentHtml: string
+  }
+}) {
   return (
     <Layout>
       <Head>
@@ -27,7 +37,7 @@ export default function Post({ postData }) {
 
 
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostIds()
   return {
     paths,
@@ -35,7 +45,7 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Fetch necessary data for the blog post using params.id
 
   const postData = await getPostData(params.id)
